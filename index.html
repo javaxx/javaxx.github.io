@@ -1,1 +1,797 @@
-<!DOCTYPE html><html lang=en><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/favicon.ico><title>movies</title><link href=/css/app.e86e6ec9.css rel=preload as=style><link href=/css/chunk-vendors.d1729c95.css rel=preload as=style><link href=/js/app.622691bd.js rel=preload as=script><link href=/js/chunk-vendors.f8c84696.js rel=preload as=script><link href=/css/chunk-vendors.d1729c95.css rel=stylesheet><link href=/css/app.e86e6ec9.css rel=stylesheet></head><body><noscript><strong>We're sorry but movies doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app></div><script src=/js/chunk-vendors.f8c84696.js></script><script src=/js/app.622691bd.js></script></body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>Document1</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .flex-row {
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .flex-column {
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        body {
+            overflow: auto;
+            background: url('./bg.png') no-repeat center/cover;
+        }
+
+        .title {
+            width: 920px;
+            padding: 30px;
+            align-items: flex-end;
+        }
+
+        .title h1 {
+            padding-bottom: 20px;
+            font-size: 38px;
+            color: #ffffff;
+            text-shadow: 0 1px 3px #222222;
+        }
+
+        .title p {
+            font-size: 18px;
+            color: #f5f5f5;
+            text-shadow: 0 1px 3px #565656;
+        }
+
+        .wrap {
+            width: 1220px;
+        }
+
+        .wrap .reference {
+            position: relative;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0);
+            border-radius: 10px;
+            box-shadow: 0 0 20px #a1a19f;
+        }
+
+        .wrap .reference img.face {
+            display: block;
+            width: 320px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .wrap .reference img.toggle {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            width: 50px;
+            height: 50px;
+        }
+
+        .wrap .scan video {
+            background-color: rgba(0, 0, 0, .8);
+            border-radius: 10px;
+        }
+
+        .wrap .control {
+            justify-content: space-around;
+            height: 456px;
+            padding: 0 20px;
+        }
+
+        .wrap .control p {
+            width: 160px;
+            height: 60px;
+            background-color: #f9f9f9;
+            text-align: center;
+            line-height: 60px;
+            color: #ffffff;
+            font-size: 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: -8px -8px 150px -8px #b2b3b5 inset, 0 0 5px #222222;
+            text-shadow: 0 0 1px #222222;
+            transition: .5s;
+        }
+
+        .wrap .control p:hover {
+            box-shadow: -8px -8px 150px -8px #50c4f1 inset, 0 0 5px #ffffff;
+        }
+
+        .wrap .scan {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wrap .scan .strainer {
+            position: absolute;
+            top: 10px;
+            width: 320px;
+            z-index: 999;
+            height: 3px;
+        }
+
+        .wrap .scan .capture {
+            width: 320px;
+            height: 456px;
+        }
+
+        .wrap .scan .strainer.on {
+            background: linear-gradient(to left, transparent, #0bffb2, transparent);
+            animation: scan 1s linear infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                top: 10px;
+            }
+            50% {
+                top: 456px;
+            }
+            100% {
+                top: 10px;
+            }
+        }
+
+    </style>
+    <script type="text/javascript" src="https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js">
+    </script>
+    <style type="text/css">#__vconsole {
+        color: #000;
+        font-size: 13px;
+        font-family: Helvetica Neue, Helvetica, Arial, sans-serif
+    }
+
+    #__vconsole .vc-max-height {
+        max-height: 250px
+    }
+
+    #__vconsole .vc-max-height-line {
+        max-height: 44px
+    }
+
+    #__vconsole .vc-min-height {
+        min-height: 40px
+    }
+
+    #__vconsole .vc-switch {
+        display: block;
+        position: fixed;
+        right: 10px;
+        bottom: 10px;
+        color: #fff;
+        background-color: #04be02;
+        line-height: 1;
+        font-size: 14px;
+        padding: 8px 16px;
+        z-index: 10000;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, .4)
+    }
+
+    #__vconsole .vc-mask {
+        top: 0;
+        background: transparent;
+        z-index: 10001;
+        transition: background .3s;
+        -webkit-tap-highlight-color: transparent;
+        overflow-y: scroll
+    }
+
+    #__vconsole .vc-mask, #__vconsole .vc-panel {
+        display: none;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0
+    }
+
+    #__vconsole .vc-panel {
+        min-height: 85%;
+        z-index: 10002;
+        background-color: #efeff4;
+        -webkit-transition: -webkit-transform .3s;
+        transition: -webkit-transform .3s;
+        transition: transform .3s;
+        transition: transform .3s, -webkit-transform .3s;
+        -webkit-transform: translateY(100%);
+        transform: translateY(100%)
+    }
+
+    #__vconsole .vc-tabbar {
+        border-bottom: 1px solid #d9d9d9;
+        overflow-x: auto;
+        height: 39px;
+        width: auto;
+        white-space: nowrap
+    }
+
+    #__vconsole .vc-tabbar .vc-tab {
+        display: inline-block;
+        line-height: 39px;
+        padding: 0 15px;
+        border-right: 1px solid #d9d9d9;
+        text-decoration: none;
+        color: #000;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none
+    }
+
+    #__vconsole .vc-tabbar .vc-tab:active {
+        background-color: rgba(0, 0, 0, .15)
+    }
+
+    #__vconsole .vc-tabbar .vc-tab.vc-actived {
+        background-color: #fff
+    }
+
+    #__vconsole .vc-content {
+        background-color: #fff;
+        overflow-x: hidden;
+        overflow-y: auto;
+        position: absolute;
+        top: 40px;
+        left: 0;
+        right: 0;
+        bottom: 40px;
+        -webkit-overflow-scrolling: touch
+    }
+
+    #__vconsole .vc-content.vc-has-topbar {
+        top: 71px
+    }
+
+    #__vconsole .vc-topbar {
+        background-color: #fbf9fe;
+        display: flex;
+        display: -webkit-box;
+        flex-direction: row;
+        flex-wrap: wrap;
+        -webkit-box-direction: row;
+        -webkit-flex-wrap: wrap;
+        width: 100%
+    }
+
+    #__vconsole .vc-topbar .vc-toptab {
+        display: none;
+        flex: 1;
+        -webkit-box-flex: 1;
+        line-height: 30px;
+        padding: 0 15px;
+        border-bottom: 1px solid #d9d9d9;
+        text-decoration: none;
+        text-align: center;
+        color: #000;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none
+    }
+
+    #__vconsole .vc-topbar .vc-toptab.vc-toggle {
+        display: block
+    }
+
+    #__vconsole .vc-topbar .vc-toptab:active {
+        background-color: rgba(0, 0, 0, .15)
+    }
+
+    #__vconsole .vc-topbar .vc-toptab.vc-actived {
+        border-bottom: 1px solid #3e82f7
+    }
+
+    #__vconsole .vc-logbox {
+        display: none;
+        position: relative;
+        min-height: 100%
+    }
+
+    #__vconsole .vc-logbox i {
+        font-style: normal
+    }
+
+    #__vconsole .vc-logbox .vc-log {
+        -webkit-tap-highlight-color: transparent
+    }
+
+    #__vconsole .vc-logbox .vc-log:empty:before {
+        content: "Empty";
+        color: #999;
+        position: absolute;
+        top: 45%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        font-size: 15px;
+        text-align: center
+    }
+
+    #__vconsole .vc-logbox .vc-item {
+        margin: 0;
+        padding: 6px 8px;
+        overflow: hidden;
+        line-height: 1.3;
+        border-bottom: 1px solid #eee;
+        word-break: break-word
+    }
+
+    #__vconsole .vc-logbox .vc-item-info {
+        color: #6a5acd
+    }
+
+    #__vconsole .vc-logbox .vc-item-debug {
+        color: #daa520
+    }
+
+    #__vconsole .vc-logbox .vc-item-warn {
+        color: orange;
+        border-color: #ffb930;
+        background-color: #fffacd
+    }
+
+    #__vconsole .vc-logbox .vc-item-error {
+        color: #dc143c;
+        border-color: #f4a0ab;
+        background-color: #ffe4e1
+    }
+
+    #__vconsole .vc-logbox .vc-log.vc-log-partly .vc-item {
+        display: none
+    }
+
+    #__vconsole .vc-logbox .vc-log.vc-log-partly-error .vc-item-error, #__vconsole .vc-logbox .vc-log.vc-log-partly-info .vc-item-info, #__vconsole .vc-logbox .vc-log.vc-log-partly-log .vc-item-log, #__vconsole .vc-logbox .vc-log.vc-log-partly-warn .vc-item-warn {
+        display: block
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-item-content {
+        margin-right: 60px;
+        display: block
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-item-meta {
+        color: #888;
+        float: right;
+        width: 60px;
+        text-align: right
+    }
+
+    #__vconsole .vc-logbox .vc-item.vc-item-nometa .vc-item-content {
+        margin-right: 0
+    }
+
+    #__vconsole .vc-logbox .vc-item.vc-item-nometa .vc-item-meta {
+        display: none
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-item-code {
+        display: block;
+        white-space: pre-wrap;
+        overflow: auto;
+        position: relative
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-item-code.vc-item-code-input, #__vconsole .vc-logbox .vc-item .vc-item-code.vc-item-code-output {
+        padding-left: 12px
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-item-code.vc-item-code-input:before, #__vconsole .vc-logbox .vc-item .vc-item-code.vc-item-code-output:before {
+        content: "\203A";
+        position: absolute;
+        top: -3px;
+        left: 0;
+        font-size: 16px;
+        color: #6a5acd
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-item-code.vc-item-code-output:before {
+        content: "\2039"
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-fold {
+        display: block;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-fold .vc-fold-outer {
+        display: block;
+        font-style: italic;
+        padding-left: 10px;
+        position: relative
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-fold .vc-fold-outer:active {
+        background-color: #e6e6e6
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-fold .vc-fold-outer:before {
+        content: "";
+        position: absolute;
+        top: 4px;
+        left: 2px;
+        width: 0;
+        height: 0;
+        border: 4px solid transparent;
+        border-left-color: #000
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-fold .vc-fold-outer.vc-toggle:before {
+        top: 6px;
+        left: 0;
+        border-top-color: #000;
+        border-left-color: transparent
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-fold .vc-fold-inner {
+        display: none;
+        margin-left: 10px
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-fold .vc-fold-inner.vc-toggle {
+        display: block
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-fold .vc-fold-inner .vc-code-key {
+        margin-left: 10px
+    }
+
+    #__vconsole .vc-logbox .vc-item .vc-fold .vc-fold-outer .vc-code-key {
+        margin-left: 0
+    }
+
+    #__vconsole .vc-logbox .vc-code-key {
+        color: #905
+    }
+
+    #__vconsole .vc-logbox .vc-code-private-key {
+        color: #d391b5
+    }
+
+    #__vconsole .vc-logbox .vc-code-function {
+        color: #905;
+        font-style: italic
+    }
+
+    #__vconsole .vc-logbox .vc-code-boolean, #__vconsole .vc-logbox .vc-code-number {
+        color: #0086b3
+    }
+
+    #__vconsole .vc-logbox .vc-code-string {
+        color: #183691
+    }
+
+    #__vconsole .vc-logbox .vc-code-null, #__vconsole .vc-logbox .vc-code-undefined {
+        color: #666
+    }
+
+    #__vconsole .vc-logbox .vc-cmd {
+        position: absolute;
+        height: 40px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-top: 1px solid #d9d9d9;
+        display: block !important
+    }
+
+    #__vconsole .vc-logbox .vc-cmd .vc-cmd-input-wrap {
+        display: block;
+        height: 28px;
+        margin-right: 40px;
+        padding: 6px 8px
+    }
+
+    #__vconsole .vc-logbox .vc-cmd .vc-cmd-input {
+        width: 100%;
+        border: none;
+        resize: none;
+        outline: none;
+        padding: 0;
+        font-size: 12px
+    }
+
+    #__vconsole .vc-logbox .vc-cmd .vc-cmd-input::-webkit-input-placeholder {
+        line-height: 28px
+    }
+
+    #__vconsole .vc-logbox .vc-cmd .vc-cmd-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 40px;
+        border: none;
+        background-color: #efeff4;
+        outline: none;
+        -webkit-touch-callout: none
+    }
+
+    #__vconsole .vc-logbox .vc-cmd .vc-cmd-btn:active {
+        background-color: rgba(0, 0, 0, .15)
+    }
+
+    #__vconsole .vc-logbox .vc-group .vc-group-preview {
+        -webkit-touch-callout: none
+    }
+
+    #__vconsole .vc-logbox .vc-group .vc-group-preview:active {
+        background-color: #e6e6e6
+    }
+
+    #__vconsole .vc-logbox .vc-group .vc-group-detail {
+        display: none;
+        padding: 0 0 10px 20px;
+        border-bottom: 1px solid #eee
+    }
+
+    #__vconsole .vc-logbox .vc-group.vc-actived .vc-group-detail {
+        display: block
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-table-row {
+        display: flex;
+        display: -webkit-flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        -webkit-box-direction: row;
+        -webkit-flex-wrap: wrap;
+        overflow: hidden;
+        border-bottom: 1px solid #eee
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-table-row.vc-left-border {
+        border-left: 1px solid #eee
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-table-col {
+        flex: 1;
+        -webkit-box-flex: 1;
+        padding: 3px 4px;
+        border-left: 1px solid #eee;
+        overflow: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        -webkit-overflow-scrolling: touch
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-table-col:first-child {
+        border: none
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-small .vc-table-col {
+        padding: 0 4px;
+        font-size: 12px
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-table-col-2 {
+        flex: 2;
+        -webkit-box-flex: 2
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-table-col-3 {
+        flex: 3;
+        -webkit-box-flex: 3
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-table-col-4 {
+        flex: 4;
+        -webkit-box-flex: 4
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-table-col-5 {
+        flex: 5;
+        -webkit-box-flex: 5
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-table-col-6 {
+        flex: 6;
+        -webkit-box-flex: 6
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-table-row-error {
+        border-color: #f4a0ab;
+        background-color: #ffe4e1
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-table-row-error .vc-table-col {
+        color: #dc143c;
+        border-color: #f4a0ab
+    }
+
+    #__vconsole .vc-logbox .vc-table .vc-table-col-title {
+        font-weight: 700
+    }
+
+    #__vconsole .vc-logbox.vc-actived {
+        display: block
+    }
+
+    #__vconsole .vc-toolbar {
+        border-top: 1px solid #d9d9d9;
+        line-height: 39px;
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        display: -webkit-box;
+        flex-direction: row;
+        -webkit-box-direction: row
+    }
+
+    #__vconsole .vc-toolbar .vc-tool {
+        display: none;
+        text-decoration: none;
+        color: #000;
+        width: 50%;
+        flex: 1;
+        -webkit-box-flex: 1;
+        text-align: center;
+        position: relative;
+        -webkit-touch-callout: none
+    }
+
+    #__vconsole .vc-toolbar .vc-tool.vc-global-tool, #__vconsole .vc-toolbar .vc-tool.vc-toggle {
+        display: block
+    }
+
+    #__vconsole .vc-toolbar .vc-tool:active {
+        background-color: rgba(0, 0, 0, .15)
+    }
+
+    #__vconsole .vc-toolbar .vc-tool:after {
+        content: " ";
+        position: absolute;
+        top: 7px;
+        bottom: 7px;
+        right: 0;
+        border-left: 1px solid #d9d9d9
+    }
+
+    #__vconsole .vc-toolbar .vc-tool-last:after {
+        border: none
+    }
+
+    #__vconsole.vc-toggle .vc-switch {
+        display: none
+    }
+
+    #__vconsole.vc-toggle .vc-mask {
+        background: rgba(0, 0, 0, .6);
+        display: block
+    }
+
+    #__vconsole.vc-toggle .vc-panel {
+        -webkit-transform: translate(0);
+        transform: translate(0)
+    }</style>
+</head>
+<body>
+<div class="title flex flex-column">
+</div>
+<div class="wrap flex flex-row">
+    <div class="control flex flex-column">
+        <p class="open">开启摄像头</p>
+        <p class="recognition">人脸识别</p>
+        <p class="close">关闭摄像头</p>
+    </div>
+    <div class="scan reference">
+        <div class="strainer"></div>
+        <video class="capture" width="320" height="456" src=""></video>
+    </div>
+
+</div>
+
+
+</body>
+<script type="text/javascript">
+    var buffer;
+    var oCapture = document.querySelector(".capture"),
+        open = document.querySelector(".open"),
+        recognition = document.querySelector(".recognition"),
+        close = document.querySelector(".close");
+    var control = document.querySelector(".control");
+
+    window.navigator.getUserMedia = navigator.getUserMedia || navigator.webKitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
+    function invokingCarera() {
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            console.log(222);
+            navigator.mediaDevices.getUserMedia({
+                'audio': true,
+                'video': {'facingMode':"user"}
+            })
+                .then(function (mediaStream) {
+                    console.log(555);
+                    getVideoStream(mediaStream)
+                })
+                .catch(function (error) {
+                        alert(1)
+                    console.log(666);
+                    console.log(error)
+                })
+        } else if (navigator.getUserMedia) {
+            console.log(111);
+            navigator.getUserMedia({
+                'video': true,
+                'audio': true
+            }, getVideoStream, getFail)
+        } else {
+            console.log(333);
+            alert('不支持摄像头调用！')
+        }
+    }
+
+    //调用成功
+    function getVideoStream(stream) {
+        buffer = stream;
+        // if(oCapture.mozSrcObject !== undefined){
+        //     oCapture.mozSrcObject = buffer;
+        // }else{
+        oCapture.src = window.URL && window.URL.createObjectURL(buffer)
+        // }
+    }
+
+    function getFail() {
+
+    }
+
+    recognition.onclick = function () {
+
+    }
+    control.addEventListener('click', function (e) {
+        e = e || window.event;
+        var className = e.target.className;
+        switch (className) {
+            case 'open':
+                invokingCarera();
+                break;
+            case 'close':
+                closeCamera();
+                break;
+            case 'recognition':
+                screenShot();
+                break;
+            default:
+                break;
+        }
+    })
+
+    function closeCamera() {
+        buffer && buffer.getTracks()[1].stop();//关闭摄像头
+    }
+
+    window.requestAnimFrame = (function () {
+        return window.requestAnimationFrame ||
+            window.webkitRequestAnimationFrame ||
+            window.mozRequestAnimationFrame ||
+            function (callback) {
+                window.setTimeout(callback, 1000 / 60);
+            };
+    })();
+
+    function screenShot() {
+        var canvas = document.createElement('canvas');
+        canvas.width = 320, canvas.height = 456;
+        document.querySelector(".wrap").appendChild(canvas);
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(oCapture, 0, 0, 320, 456);
+        setInterval(function () {
+            ctx.drawImage(oCapture, 0, 0, 320, 456);
+            ctx.font = "30px sans-serif";
+            ctx.fillStyle = "blue";
+            ctx.fillText("请眨眼", 50, 50);
+        }, 13)
+    }
+</script>
