@@ -710,7 +710,7 @@
             console.log(222);
             navigator.mediaDevices.getUserMedia({
                 'audio': true,
-                'video': {'facingMode':"user"}
+                'video': {'facingMode': {exact: "environment"}}
             })
                 .then(function (mediaStream) {
                     console.log(555);
